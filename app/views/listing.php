@@ -17,7 +17,7 @@
                         <?= ucfirst($post->unit) ?>
                     </span></div>
                 <div class="price my-2"><span class="text-default">
-                        <?= '$'.$post->price ?> Per
+                        <?= '₦ '.$post->price ?> Per
                         <?= ucfirst($post->unit) ?>
                 </div>
                 <div class="category my-2">

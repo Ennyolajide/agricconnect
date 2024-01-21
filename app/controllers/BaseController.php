@@ -2,11 +2,13 @@
 
 use App\Models\Db;
 use App\Models\User;
+use App\Models\Utility;
 
 
 class BaseController {
     
     protected $db;
+    protected $utility;
 
     public $flashSession = [];
 
@@ -15,7 +17,8 @@ class BaseController {
      */
     public function __construct() {
         session_start();
-        $this->db = new Db();   
+        $this->db = new Db();  
+        $this->utility = new Utility($this->db);
     }
 
     /**
@@ -70,6 +73,13 @@ class BaseController {
 
     public function checkAuth() {
         if(!isset($_SESSION['user_id'])) {
+            $this->redirectTo('/login');
+        }
+    }
+
+    public function checkAdminAuth() {
+        $this->checkAuth();
+        if(strtolower($_SESSION['user_type']) != 'admin'){
             $this->redirectTo('/login');
         }
     }

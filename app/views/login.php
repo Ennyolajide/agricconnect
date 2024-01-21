@@ -6,33 +6,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <style>
+        .custom-alert {
+            margin-left: 17%;
+            margin-right: 17%;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
+        <br>
+        <br>
+        <div class="text-center">
+            <a href="/">
+                <img src="/images/logo.png" height="70" class="logo text-center" alt="">
+            </a>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Login</div>
 
-    <div class="container p-4">
-        <img src="/images/logo.png" class="logo text-center" alt="">
 
-        <form method="POST" action="/login">
-            <h4 class="text-center text-success">User Login</h4>
-            <?php if ($error): ?>
-                <div class="alert alert-danger">
-                    <p class="small"><?= $error ?></p>
+                    <div class="panel-body">
+                        <div class="custom-alert">
+                            <?php if($error): ?>
+                                <div class="alert alert-danger">
+                                    <p class="small">
+                                        <?= $error ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <form class="form-horizontal" method="POST" action="/login">
+
+                            <div class="form-group">
+                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" name="email" value="" required
+                                        autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember"> Remember Me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <a class="btn btn-link" href="/register">
+                                        No Account ? Register now
+                                    </a>
+                                    <button type="submit" class="btn btn-primary pull-right">
+                                        Login
+                                    </button>
+
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            <?php endif; ?>
-            <div class="form-group">
-                <label for="email" class="label-txt">ENTER YOUR EMAIL</label>
-                <input type="email" id="email" name="email" class="form-control input">
             </div>
-            <div class="form-group">
-                <label for="password" class="label-txt">ENTER YOUR PASSWORD</label>
-                <input type="password" id="password" name="password" class="form-control input">
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-            <p class="text-center py-2"><span class="text-danger">No account? </span> <a href="register">Signup here</a></p>
-        </form>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

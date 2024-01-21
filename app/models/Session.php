@@ -35,7 +35,7 @@ class Session {
         return $this->isAuthenticated() ? $_SESSION['user_id'] : null;
     }
 
-    public function getUserTypeById($userId) {
+    public function getUserType() {
         // Implement this logic based on your application requirements
         return $this->isAuthenticated() ? $_SESSION['user_type'] : null;
     }

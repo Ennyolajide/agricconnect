@@ -47,7 +47,7 @@ class Auth extends Session {
     }
 
     public function loginUser($email, $pswd) {
-        $sql = 'SELECT * FROM users WHERE email = ?';
+        $sql = 'SELECT * FROM users WHERE email = ? AND active = 1';
         $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_OBJ);

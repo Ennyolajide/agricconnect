@@ -24,7 +24,7 @@ class HomeController extends BaseController {
         $this->renderView('listings', compact('post', 'posts', 'totalPages', 'currentPage', 'searchParam'));
     }
 
-    public function category($id, $page = null) {
+    public function category($id=null, $page = null) {
         
         $postsPerPage = 15;
         $post = new Post(new Db());

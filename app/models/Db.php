@@ -84,7 +84,9 @@ class Db {
                     address TEXT,
                     type TEXT,
                     image TEXT,
-                    password TEXT NOT NULL'. ($this->isMysql() ? ', UNIQUE (email(255))' : '') .'
+                    password TEXT NOT NULL,
+                    active INTEGER NOT NULL DEFAULT 1,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP '. ($this->isMysql() ? ', UNIQUE (email(255))' : '') .'
                 )
             ';
         try {

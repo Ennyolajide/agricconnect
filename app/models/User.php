@@ -15,6 +15,14 @@ class User extends Session {
     public $email;
     public $type;
 
+    public $address;
+
+    public $active;
+
+    public $image;
+
+    public $created_at;
+
     public $publicKey;
     private $privateKey;
 
@@ -38,7 +46,7 @@ class User extends Session {
      * @param int $userId The ID of the user.
      */
     private function fetchUserDetails($userId) {
-        $query = "SELECT u.id, name, email, type, address, image, private_key, public_key
+        $query = "SELECT u.id, name, email, type, address, image, active, created_at, private_key, public_key
                 FROM users u
                 LEFT JOIN user_keys uk ON u.id = uk.user_id
                 WHERE u.id = ?";
@@ -179,7 +187,7 @@ class User extends Session {
                 'sender_id' => $messageData->sender_id,
                 'receiver_id' => $messageData->receiver_id,
                 'decrypted_message' => $decryptedMessage,
-                
+
                 'party_id' => $messageData->sender_id == $this->id ? $messageData->receiver_id : $messageData->sender_id
             ];
         }
@@ -333,5 +341,22 @@ class User extends Session {
     public function checkIsBuyer() {
         return strtolower($this->type) == 'buyer';
     }
-    
+
+    public function deactivate() {
+        $query = "UPDATE users SET active = 0 WHERE id = :id";
+        $stmt = $this->db->getConnection()->prepare($query);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function activate() {
+        $query = "UPDATE users SET active = 1 WHERE id = :id";
+        $stmt = $this->db->getConnection()->prepare($query);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function isAdmin(){
+        return strtolower($this->type) == 'admin';
+    }
 }
