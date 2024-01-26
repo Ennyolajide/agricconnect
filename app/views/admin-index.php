@@ -10,7 +10,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/app.css">
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap.min.css"> -->
     <style>
         .dataTables_wrapper .dataTables_filter {
             float: right;
@@ -82,9 +81,9 @@
                                         <a href="/admin/users">
                                             Manage Users
                                         </a>
-                                        <a href="/admin/posts">
+                                        <!-- <a href="/admin/posts">
                                             Manage Post
-                                        </a>
+                                        </a> -->
                                         <a href="/logout">
                                             Logout
                                         </a>

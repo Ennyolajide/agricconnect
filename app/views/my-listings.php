@@ -19,7 +19,7 @@
                         </div>
                         <div>
                             <span class="bold">
-                                <?= '$ '.$item->price ?>
+                                <?= '₦ '.$item->price ?>
                             </span>
                             <span class="small">Per</span>
                             <span>

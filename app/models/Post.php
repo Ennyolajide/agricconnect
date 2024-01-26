@@ -21,14 +21,14 @@ class Post {
         
         $stmt->execute();
         
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_BOTH);
     }
     
     public function getPosts($startIndex = 0, $perPage = 15, $categoryId = null, $searchParam = null) {
-        $query = 'SELECT p.*, c.name AS category, u.name AS poster_name, u.email AS poster_email
+        $query = 'SELECT p.*, COALESCE(c.name, NULL) AS category, u.name AS poster_name, u.email AS poster_email
                   FROM posts p
                   JOIN users u ON p.user_id = u.id
-                  JOIN categories c ON p.category_id = c.id
+                  LEFT JOIN categories c ON p.category_id = c.id
                   WHERE p.available = 1 ';
     
         if ($categoryId !== null) {
@@ -39,7 +39,7 @@ class Post {
             $query .= ' AND LOWER(p.name) LIKE LOWER(:searchParam)';
         }
     
-        $query .= ' ORDER BY id LIMIT :limit OFFSET :offset';
+        $query .= ' ORDER BY id DESC LIMIT :limit OFFSET :offset';
     
         $stmt = $this->db->getConnection()->prepare($query);
         $stmt->bindParam(':limit', $perPage, PDO::PARAM_INT);
@@ -53,8 +53,6 @@ class Post {
             $searchParam = '%' . strtolower($searchParam) . '%';
             $stmt->bindParam(':searchParam', $searchParam, PDO::PARAM_STR);
         }
-    
-        //$stmt->debugDumpParams();
     
         $stmt->execute();
     
@@ -82,14 +80,14 @@ class Post {
 
     public function delete($id, $userId) {
         // Delete post data from the database
-        $query = 'DELETE FROM posts WHERE id = ? AND user_id = ? LIM';
+        $query = 'DELETE FROM posts WHERE id = ? AND user_id = ?';
         $stmt = $this->db->getConnection()->prepare($query);
         return $stmt->execute([$id, $userId]);
     }
 
     public function getPost($id) {
         // Fetch post data from the database based on ID
-        $query = 'SELECT posts.*, categories.name AS category, users.name AS poster_name, users.email AS poster_email
+        $query = 'SELECT posts.*, COALESCE(categories.name, NULL) AS category, users.name AS poster_name, users.email AS poster_email
                   FROM posts
                   JOIN users ON posts.user_id = users.id
                   LEFT JOIN categories ON posts.category_id = categories.id
@@ -99,7 +97,7 @@ class Post {
         $stmt = $this->db->getConnection()->prepare($query);
         $stmt->execute([$id]);
 
-        return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetch(PDO::FETCH_BOTH);
     }
 
     public function getCategories() {
@@ -137,22 +135,3 @@ class Post {
         return $stmt->fetchColumn();
     }
 }
-
-// Example usage:
-// $db = new Db('mysql', 'localhost', 'your_database', 'your_username', 'your_password');
-// $post = new Post($db);
-
-// Fetch all posts
-// $allPosts = $post->getPosts();
-
-// Fetch posts of type 'farmer'
-// $farmerPosts = $post->getPosts('farmer');
-
-// Save a post
-// $post->save(1, 'This is a post.', 'farmer'); // Replace 1 with the actual user ID
-
-// Update a post
-// $post->update('Updated content.');
-
-// Delete a post
-// $post->delete(); // This assumes that the instance is already populated with post data

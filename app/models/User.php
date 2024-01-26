@@ -95,7 +95,11 @@ class User extends Session {
     public function updateProfile($name, $address, $image) {
         $query = 'UPDATE users SET name = ?, address = ?, image = ? WHERE id = ?';
         $stmt = $this->db->getConnection()->prepare($query);
-        return $stmt->execute([$name, $address, $image, $this->id]);
+        $status = $stmt->execute([$name, $address, $image, $this->id]);
+
+        $status ? $this->fetchUserDetails($this->id) : null;
+
+        return $status;
     }
 
     /**
@@ -284,12 +288,12 @@ class User extends Session {
     }
 
     /**
-     * Get posts of a specific type.
-     * @param string $type The type of posts to retrieve.
-     * @return array An array of posts of the specified type.
+     * Create a new post for the user.
+     * @param string $content The content of the post.
      */
-    public function getPosts($type) {
-        return $this->post->getPosts($type);
+    public function createPost($name, $content, $details = []) {
+        $details['post_type'] = $this->type;
+        return $this->post->save($this->id, $name, $content, $details);
     }
 
     /**
@@ -305,20 +309,10 @@ class User extends Session {
      * Create a new post for the user.
      * @param string $content The content of the post.
      */
-    public function createPost($name, $content, $details = []) {
-        $details['post_type'] = $this->type;
-        return $this->post->save($this->id, $name, $content, $details);
-    }
-
-    /**
-     * Create a new post for the user.
-     * @param string $content The content of the post.
-     */
     public function updatePost($id, $name, $content, $details = []) {
         $details['post_type'] = $this->type;
         return $this->post->update($id, $this->id, $name, $content, $details);
     }
-
 
     /**
      * Delete a post by its ID.

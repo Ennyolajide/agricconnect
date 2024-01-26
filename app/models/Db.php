@@ -45,8 +45,8 @@ class Db {
                 //die("Unsupported database type");
             }
         } catch (Exception $e) {
-            // echo "Error connecting to database: " . $e->getMessage() . "\n";
-            // exit();
+            echo "Error connecting to database: " . $e->getMessage() . "\n";
+            exit();
         }
     }
 

@@ -3,8 +3,6 @@ namespace App\Models;
 
 use PDO;
 use PDOException;
-
-
 use ParagonIE\ConstantTime\Base64;
 
 class Auth extends Session {
